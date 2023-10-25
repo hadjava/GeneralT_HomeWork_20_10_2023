@@ -1,0 +1,57 @@
+-- Homework 20_10_2023
+ 
+ 
+ 
+ 
+ 
+ /*
+8. вывести имя студента и имена  старост, которые есть на курсах, которые он проходит
+Eng: "Display the name of the student and the names of the headman representatives who are present in the courses that he is taking."
+Дз на дом.
+*/
+
+SELECT 
+s.name AS student_name, 
+h.name AS headman_name
+FROM students AS s
+INNER JOIN students2courses AS s2c ON s.id = s2c.student_id
+INNER JOIN courses AS c ON s2c.course_id = c.id
+LEFT JOIN students AS h ON c.headman_id = h.id;
+
+
+/*
+2.Используем БД shop :
+Выведите имена покупателей, которые сделали заказ.
+Предусмотрите в выборке также имена продавцов.
+Примечание: покупатели и продавцы должны быть из разных городов.
+В выборке должно присутствовать два атрибута — cname, sname.
+*/
+use shop;
+
+
+SELECT c.CNAME AS cname, 
+s.SNAME AS sname
+FROM customers c
+INNER JOIN orders o ON c.CUST_ID = o.CUST_ID
+INNER JOIN sellers s ON o.SELL_ID = s.SELL_ID
+WHERE c.CITY <> s.CITY;
+
+
+
+
+/*
+3..Используем БД shop :
+Вывести имена покупателей которые ничего никогда не покупали.
+Решить задачу двумя способами : через join и через подзапрос
+
+*/
+
+SELECT CNAME
+FROM customers
+LEFT JOIN orders ON customers.CUST_ID = orders.CUST_ID
+WHERE orders.CUST_ID IS NULL;
+
+-- Подзапрос
+SELECT CNAME
+FROM customers
+WHERE CUST_ID NOT IN (SELECT CUST_ID FROM orders);
